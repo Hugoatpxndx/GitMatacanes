@@ -42,6 +42,25 @@ function eliminarResidente(numeroCasa, residenteId) {
   return colonia;
 }
 
+// Nueva función agregada para mostrar todos los residentes
+function mostrarResidentes() {
+  const colonia = getColonia();
+  if (!colonia) throw new Error('Colonia no inicializada');
+  
+  let todosLosResidentes = [];
+  
+  colonia.casas.forEach(casa => {
+    casa.residentes.forEach(residente => {
+      todosLosResidentes.push({
+        numeroCasa: casa.numero,
+        ...residente
+      });
+    });
+  });
+  
+  return todosLosResidentes;
+}
+
 function completarOnboarding() {
   const colonia = getColonia();
   if (!colonia) throw new Error('Colonia no inicializada');
@@ -59,6 +78,7 @@ module.exports = {
   getColonia,
   agregarResidente,
   eliminarResidente,
+  mostrarResidentes, // Exportamos la nueva función
   completarOnboarding,
   resetColonia
 };

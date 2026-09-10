@@ -57,4 +57,29 @@ describe('colonia-onboarding', () => {
       expect(getColonia().casas[2].residentes).toHaveLength(1);
     });
   });
+
+  describe('eliminarResidente', () => {
+    test('elimina un residente por id y deja la casa sin él', () => {
+      initColonia(10);
+      const residente = agregarResidente(3, { nombre: 'Juan', apellido: 'Pérez' })
+        .casas[2].residentes[0];
+
+      const colonia = eliminarResidente(3, residente.id);
+
+      expect(colonia.casas[2].residentes).toHaveLength(0);
+      expect(getColonia().casas[2].residentes).toHaveLength(0);
+    });
+
+    test('no afecta a otras casas al eliminar', () => {
+      initColonia(10);
+      agregarResidente(3, { nombre: 'Juan', apellido: 'Pérez' });
+      const residenteCasa5 = agregarResidente(5, { nombre: 'María', apellido: 'Gómez' })
+        .casas[4].residentes[0];
+
+      eliminarResidente(5, residenteCasa5.id);
+
+      expect(getColonia().casas[2].residentes).toHaveLength(1);
+      expect(getColonia().casas[4].residentes).toHaveLength(0);
+    });
+  });
 });

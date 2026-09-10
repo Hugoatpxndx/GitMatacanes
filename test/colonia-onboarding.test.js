@@ -43,20 +43,41 @@ describe('colonia-onboarding', () => {
   });
 
   describe('agregarResidente', () => {
-    test('agrega un residente a una casa válida y lo asigna correctamente', () => {
+  test('agrega un residente a una casa válida y lo asigna correctamente', () => {
+    initColonia(10);
+
+    const colonia = agregarResidente(3, { nombre: 'Juan', apellido: 'Pérez' });
+
+    expect(colonia.casas[2].residentes).toHaveLength(1);
+    expect(colonia.casas[2].residentes[0]).toMatchObject({
+      nombre: 'Juan',
+      apellido: 'Pérez'
+    });
+    expect(colonia.casas[2].residentes[0].id).toBeDefined();
+    expect(getColonia().casas[2].residentes).toHaveLength(1);
+  });
+
+  describe('casos de error', () => {
+    test('lanza error si la colonia no está inicializada', () => {
+      expect(() => agregarResidente(1, { nombre: 'Juan', apellido: 'Pérez' }))
+        .toThrow('Colonia no inicializada');
+    });
+
+    test('lanza error si el número de casa es menor a 1', () => {
       initColonia(10);
 
-      const colonia = agregarResidente(3, { nombre: 'Juan', apellido: 'Pérez' });
+      expect(() => agregarResidente(0, { nombre: 'Juan', apellido: 'Pérez' }))
+        .toThrow('Casa inválida. Debe ser entre 1 y 10');
+    });
 
-      expect(colonia.casas[2].residentes).toHaveLength(1);
-      expect(colonia.casas[2].residentes[0]).toMatchObject({
-        nombre: 'Juan',
-        apellido: 'Pérez'
-      });
-      expect(colonia.casas[2].residentes[0].id).toBeDefined();
-      expect(getColonia().casas[2].residentes).toHaveLength(1);
+    test('lanza error si el número de casa excede el total', () => {
+      initColonia(10);
+
+      expect(() => agregarResidente(11, { nombre: 'Juan', apellido: 'Pérez' }))
+        .toThrow('Casa inválida. Debe ser entre 1 y 10');
     });
   });
+});
 
   describe('eliminarResidente', () => {
     test('elimina un residente por id y deja la casa sin él', () => {

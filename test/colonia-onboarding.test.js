@@ -82,4 +82,37 @@ describe('colonia-onboarding', () => {
       expect(getColonia().casas[4].residentes).toHaveLength(0);
     });
   });
+
+  describe('mostrarResidentes', () => {
+    test('lista todos los residentes con el número de su casa', () => {
+      initColonia(10);
+      agregarResidente(3, { nombre: 'Juan', apellido: 'Pérez' });
+      agregarResidente(5, { nombre: 'María', apellido: 'Gómez' });
+
+      const residentes = mostrarResidentes();
+
+      expect(residentes).toHaveLength(2);
+      expect(residentes[0]).toMatchObject({
+        numeroCasa: 3,
+        nombre: 'Juan',
+        apellido: 'Pérez'
+      });
+      expect(residentes[1]).toMatchObject({
+        numeroCasa: 5,
+        nombre: 'María',
+        apellido: 'Gómez'
+      });
+    });
+  });
+
+  describe('completarOnboarding', () => {
+    test('marca la colonia como completada', () => {
+      initColonia(10);
+
+      const colonia = completarOnboarding();
+
+      expect(colonia.completed).toBe(true);
+      expect(getColonia().completed).toBe(true);
+    });
+  });
 });

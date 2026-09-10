@@ -1,0 +1,12 @@
+{
+  "name": "gitmatacanes",
+  "version": "1.0.0",
+  "description": "Sistema para control de accesos a una colonia privada",
+  "main": "colonia-onboarding.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
